@@ -223,17 +223,23 @@ int fa0/0
 int fa0/0.12
   encap dot1Q 12
   ip add 10.1.2.2 255.255.255.0
+  ip router isis
+  isis circuit-type level-1
   exit
 
 int fa0/0.23
   encap dot1Q 23
   ip add 10.2.3.2 255.255.255.0
+  ip router isis
+  isis circuit-type level-1
   exit
 
 
 int fa0/0.25
   encap dot1Q 25
   ip add 10.2.5.2 255.255.255.0
+  ip router isis
+  isis circuit-type level-1
   exit
 
 
@@ -241,41 +247,18 @@ int fa0/0.25
 int fa0/0.27
   encap dot1Q 27
   ip add 10.2.7.2 255.255.255.0
+  ip router isis
+  isis circuit-type level-2-only
   exit
 int fa0/0.212
   encap dot1Q 212
   ip add 10.2.12.2 255.255.255.0
+  ip router isis
+  isis circuit-type level-2-only
   exit
 
-
-
-
-
-
-router ospf 1
-network 10.1.2.2 0.0.0.0 area 0
-network 10.2.3.2 0.0.0.0 area 0
-network 10.2.5.2 0.0.0.0 area 0
-network 10.2.7.2 0.0.0.0 area 3
-network 10.2.12.2 0.0.0.0 area 7
-  exit
-
-int loop0
-	ip add 10.0.0.2 255.255.255.255
-router ospf 1
-	router-id 10.0.0.2
-	network 10.0.0.2 0.0.0.0.0 area 0
-area 3 virtual-link 10.0.0.8
-area 4 virtual-link 10.0.0.9
-area 7 stub 
-area 7 stub no-summaries
-
-
-
-
-
-
-
+router isis 
+net 49.0005.0000.1000.0002.00
 
 -------------------------------------------------R4-----------------------------------
 conf t
@@ -286,12 +269,14 @@ int fa0/0
 int fa0/0.34
   encap dot1Q 34
   ip add 10.3.4.4 255.255.255.0
-
+  ip router isis
   ip nat inside
+  isis circuit-type level-2-only
   exit
 int fa0/1
   ip add DHCP
   ip nat outside
+  ip router isis
   no shut
   exit
 
@@ -310,16 +295,34 @@ int fa0/1
   access-list 1 permit 10.7.8.0 0.0.0.255
   access-list 1 permit 10.8.9.0 0.0.0.255
 
+conf t
+ int fa0/1.10
+   encapsulation dot1q 10
+   ip add 192.168.1.1 255.255.255.240
+   ip router isis
 
-router ospf 1
-  network 10.3.4.4 0.0.0.0 area 1
+ int fa0/1.20
+   encapsulation dot1q 20
+   ip add 192.168.1.17 255.255.255.240
+   ip router isis
+
+int fa0/1.30
+   encapsulation dot1q 30
+   ip add 192.168.1.33 255.255.255.240
+   ip router isis
+
+int fa0/1.40
+   encapsulation dot1q 40
+   ip add 192.168.1.49 255.255.255.240
+   ip router isis
+   exit
+
+	router isis 
+  net 49.0001.0000.1000.0004.00
+  redistribute connect subnet
   exit
-int loop0
-	ip add 10.0.0.4 255.255.255.255
-router ospf 1
-	router-id 10.0.0.4
-	network 10.0.0.4 0.0.0.0 area 1
-	default-information originate
+
+
 
 
 
@@ -329,18 +332,19 @@ int fa0/0
   no shut
   exit
 
-
 int fa0/0.56
   encap dot1Q 56
   ip add 10.5.6.6 255.255.255.0
+  ip router isis
+  isis circuit-type level-2-only
   no shut
-
   ip nat inside
   exit
 
 int fa0/1
   ip add DHCP
   ip nat outside
+  ip router isis
   no shut
   exit
 
@@ -359,35 +363,11 @@ int fa0/1
   access-list 1 permit 10.7.8.0 0.0.0.255
   access-list 1 permit 10.8.9.0 0.0.0.255
 
-router ospf 1
-  network 10.5.6.6 0.0.0.0 area 2
-  default-information originate
+router isis 
+  net 49.0002.0000.1000.0006.00
 
-int loop0
-  ip add 10.0.0.6 255.255.255.255
-router ospf 1
-	router-id 10.0.0.6
-	network 10.0.0.6 0.0.0.0 area 2
-conf t
- int fa0/1.10
-   encapsulation dot1q 10
-   ip add 172.19.1.1 255.255.255.240
 
- int fa0/1.20
-   encapsulation dot1q 20
-   ip add 172.19.1.17 255.255.255.240
 
-int fa0/1.30
-   encapsulation dot1q 30
-   ip add 172.19.1.33 255.255.255.240
-
-int fa0/1.40
-   encapsulation dot1q 40
-   ip add 172.19.1.49 255.255.255.240
-   exit
-router ospf 1
-	redistribute connect subnet
-  exit
 
 
 
@@ -401,24 +381,46 @@ int fa0/0
 int fa0/0.78
   encap dot1Q 78
   ip add 10.7.8.8 255.255.255.0
+  ip router isis
+  isis circuit-type level-2-only
   exit
 
 int fa0/0.89
   encap dot1Q 89
   ip add 10.8.9.8 255.255.255.0
+  ip router isis
+  isis circuit-type level-1
   exit
 
-router ospf 1
-  network 10.7.8.8 0.0.0.0 area 3
-  network 10.8.9.8 0.0.0.0 area 4
+conf t
+ int fa0/1.10
+   encapsulation dot1q 10
+   ip add 172.16.0.1 255.255.255.0
+   ip router isis
+
+ int fa0/1.20
+   encapsulation dot1q 20
+   ip add 172.16.1.1 255.255.255.0
+   ip router isis
+
+int fa0/1.30
+   encapsulation dot1q 30
+   ip add 192.168.2.1 255.255.255.0
+   ip router isis
+
+int fa0/1.40
+   encapsulation dot1q 40
+   ip add 192.168.3.1 255.255.255.0
+   ip router isis
+   exit
+
+
+router isis 
+  net 49.0004.0000.1000.0008.00
+  redistribute connect subnet
   exit
-int loop0
- 	ip add 10.0.0.8 255.255.255.255
-router ospf 1
-	router-id 10.0.0.8	
-	network 10.0.0.8 0.0.0.0 area 3
-area 3 virtual-link 10.0.0.2
-area  4 virtual link 10.0.0.9
+
+
 
 
 
@@ -432,16 +434,14 @@ int fa0/0
 int fa0/0.910
   encap dot1Q 910
   ip add 10.9.10.10 255.255.255.0
+  ip router isis
+  isis circuit-type level-1
   exit
 
-router ospf 1
-  network 10.9.10.10 0.0.0.0 area 5
+router isis 
+  net 49.0004.0000.1000.0010.00
   exit
-int loop0
- 	ip add 10.0.0.10 255.255.255.255
-router ospf 1
-	router-id 10.0.0.10	
-	network 10.0.0.10 0.0.0.0 area 5
+
 
 
 --------------------------------------------------------R12--------------------------------------------
@@ -450,20 +450,16 @@ int fa0/0
   no shut
   exit
 
-
 int fa0/0.212
   encap dot1Q 212
   ip add 10.2.12.12 255.255.255.0
+  ip router isis
+  isis circuit-type level-2-only
   exit
-router ospf 1
-  network 10.2.12.12 0.0.0.0 area 7
-  exit
-int loop0
- 	ip add 10.0.0.12 255.255.255.255
-router ospf 1
-	router-id 10.0.0.12	
-	network 10.0.0.12 0.0.0.0 area 7
-area 7 stub 
+
+router isis 
+  net 49.0007.0000.1000.0012.00
+
 
 
 12--
