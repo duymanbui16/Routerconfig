@@ -1,0 +1,508 @@
+Chú thích: ge-0/0/3 connect to Cisco Router (Chan)
+	 Between 2 Juniper Router (Le) big ge-0/0/1
+			            small ge-0/0/0
+
+At Etherswitch Router 
+vlan database dont need to create vlan between 2 Juniper Router (Ex: 13 15 35 ...)
+
+need to configure R6  before static route in another routers
+
+
+
+Juniper
+conf
+------------------------------------R1----------------------------------------------------
+edit logical-systems R1
+  set interfaces ge-0/0/3 unit 12 description "connect to R2" 
+  set interfaces ge-0/0/3 unit 12 vlan-id 12                           
+  set interfaces ge-0/0/3 unit 12 family inet address 10.1.2.1/24 
+  set protocols ospf area 0.0.0.0 interface ge-0/0/3.12
+
+  set interfaces ge-0/0/0 unit 13 description "connect to R3"
+  set interfaces ge-0/0/0 unit 13 vlan-id 13                           
+  set interfaces ge-0/0/0 unit 13 family inet address 10.1.3.1/24 
+  set protocols ospf area 0.0.0.0 interface ge-0/0/0.13
+ 
+  set interfaces ge-0/0/0 unit 15 description "connect to R5"
+  set interfaces ge-0/0/0 unit 15 vlan-id 15                           
+  set interfaces ge-0/0/0 unit 15 family inet address 10.1.5.1/24 
+  set protocols ospf area 0.0.0.0 interface ge-0/0/0.15
+
+  set interfaces ge-0/0/0 unit 111 description "connect to R11"
+  set interfaces ge-0/0/0 unit 111 vlan-id 111                         
+  set interfaces ge-0/0/0 unit 111 family inet address 10.1.11.1/24 
+  set protocols ospf area 0.0.0.6 interface ge-0/0/0.111
+  set protocols ospf area 0.0.0.6 stub
+  set protocols ospf area 0.0.0.6 stub no-summaries
+
+
+   	set interfaces lo0 unit 100 family inet address 10.0.0.1/32
+	set protocols ospf area 0.0.0.0 interface lo0.100
+	set routing-options router-id 10.0.0.1
+
+
+  commit
+
+
+
+
+-----------------------------------R3-------------------------------------
+edit logical-systems R3
+  set interfaces ge-0/0/1 unit 13 description "connect to R1"
+  set interfaces ge-0/0/1 unit 13 vlan-id 13                           
+  set interfaces ge-0/0/1 unit 13 family inet address 10.1.3.3/24 
+  set protocols ospf area 0.0.0.0 interface ge-0/0/1.13
+
+  set interfaces ge-0/0/3 unit 23 description "connect to R2"
+  set interfaces ge-0/0/3 unit 23 vlan-id 23                           
+  set interfaces ge-0/0/3 unit 23 family inet address 10.2.3.3/24 
+  set protocols ospf area 0.0.0.0 interface ge-0/0/3.23
+
+  set interfaces ge-0/0/3 unit 34 description "connect to R4"
+  set interfaces ge-0/0/3 unit 34 vlan-id 34                           
+  set interfaces ge-0/0/3 unit 34 family inet address 10.3.4.3/24 
+  set protocols ospf area 0.0.0.1 interface ge-0/0/3.34
+
+  set interfaces ge-0/0/0 unit 35 description "connect to R5"
+  set interfaces ge-0/0/0 unit 35 vlan-id 35                           
+  set interfaces ge-0/0/0 unit 35 family inet address 10.3.5.3/24 
+  set protocols ospf area 0.0.0.0 interface ge-0/0/0.35
+
+ 	set interfaces lo0 unit 300 family inet address 10.0.0.3/32
+	set protocols ospf area 0.0.0.0 interface lo0.300
+	set routing-options router-id 10.0.0.3
+
+   
+
+
+ commit
+-------------------------------------------------R5------------------------------------------
+edit logical-systems R5
+  set interfaces ge-0/0/1 unit 15 description "connect to R1"
+  set interfaces ge-0/0/1 unit 15 vlan-id 15                           
+  set interfaces ge-0/0/1 unit 15 family inet address 10.1.5.5/24 
+  set protocols ospf area 0.0.0.0 interface ge-0/0/1.15
+
+  set interfaces ge-0/0/3 unit 25 description "connect to R2"
+  set interfaces ge-0/0/3 unit 25 vlan-id 25                          
+  set interfaces ge-0/0/3 unit 25 family inet address 10.2.5.5/24 
+  set protocols ospf area 0.0.0.0 interface ge-0/0/3.25
+
+  set interfaces ge-0/0/1 unit 35 description "connect to R3"
+  set interfaces ge-0/0/1 unit 35 vlan-id 35                           
+  set interfaces ge-0/0/1 unit 35 family inet address 10.3.5.5/24 
+  set protocols ospf area 0.0.0.0 interface ge-0/0/1.35
+
+
+  set interfaces ge-0/0/3 unit 56 description "connect to R6"
+  set interfaces ge-0/0/3 unit 56 vlan-id 56                          
+  set interfaces ge-0/0/3 unit 56 family inet address 10.5.6.5/24 
+  set protocols ospf area 0.0.0.2 interface ge-0/0/3.56
+
+	set interfaces lo0 unit 500 family inet address 10.0.0.5/32
+	set protocols ospf area 0.0.0.0 interface lo0.500
+	set routing-options router-id 10.0.0.5
+
+
+
+  commit
+------------------------------------R7------------------------------------------
+
+edit logical-systems R7
+  set interfaces ge-0/0/3 unit 27 description "connect to R2"
+  set interfaces ge-0/0/3 unit 27 vlan-id 27                          
+  set interfaces ge-0/0/3 unit 27 family inet address 10.2.7.7/24 
+  set protocols ospf area 0.0.0.3 interface ge-0/0/3.27
+
+  
+  set interfaces ge-0/0/3 unit 78 description "connect to R8"
+  set interfaces ge-0/0/3 unit 78 vlan-id 78                          
+  set interfaces ge-0/0/3 unit 78 family inet address 10.7.8.7/24 
+  set protocols ospf area 0.0.0.3 interface ge-0/0/3.78
+
+	set interfaces lo0 unit 700 family inet address 10.0.0.7/32
+	set protocols ospf area 0.0.0.3 interface lo0.700
+	set routing-options router-id 10.0.0.7
+
+
+
+  commit
+----------------------------R9-------------------------------------------
+edit logical-systems R9
+
+  set interfaces ge-0/0/3 unit 89 description "connect to R8"
+  set interfaces ge-0/0/3 unit 89 vlan-id 89                          
+  set interfaces ge-0/0/3 unit 89 family inet address 10.8.9.9/24 
+  set protocols ospf area 0.0.0.4 interface ge-0/0/3.89
+
+  set interfaces ge-0/0/3 unit 910 description "connect to R10"
+  set interfaces ge-0/0/3 unit 910 vlan-id 910                          
+  set interfaces ge-0/0/3 unit 910 family inet address 10.9.10.9/24 
+  set protocols ospf area 0.0.0.5 interface ge-0/0/3.910
+
+
+	set interfaces lo0 unit 900 family inet address 10.0.0.9/32
+	set protocols ospf area 0.0.0.4 interface lo0.900
+	set routing-options router-id 10.0.0.9
+set protocols ospf area 0.0.0.0 virtual-link neighbor-id 10.0.0.8 transit-area 0.0.0.4
+
+
+
+  
+
+
+  commit
+-------------------------------------R11---------------------------------------
+edit logical-systems R11
+
+  set interfaces ge-0/0/1 unit 111 description "connect to R1"
+  set interfaces ge-0/0/1 unit 111 vlan-id 111                          
+  set interfaces ge-0/0/1 unit 111 family inet address 10.1.11.11/24 
+  set protocols ospf area 0.0.0.6 interface ge-0/0/1.111
+  set protocols ospf area 0.0.0.6 stub
+
+
+	set interfaces lo0 unit 1100 family inet address 10.0.0.11/32
+	set protocols ospf area 0.0.0.6 interface lo0.1100
+	set routing-options router-id 10.0.0.11
+ commit
+
+
+Cisco
+
+---------------------------------------SW-------------------------------------------------
+...
+vlan database 
+
+  vlan 12
+  vlan 13
+  vlan 15
+  vlan 111
+  vlan 23
+  vlan 25
+  vlan 27
+  vlan 212
+  vlan 34
+  vlan 35
+  vlan 56
+  
+  vlan 78
+  vlan 89
+  vlan 910
+  exit
+
+conf t
+  int fa1/2
+   switchport mode trunk
+   exit
+  int fa1/4
+   switchport mode trunk
+   exit  
+  int fa1/6
+   switchport mode trunk
+   exit
+  int fa1/8
+   switchport mode trunk
+   exit
+  int fa1/10
+   switchport mode trunk
+   exit
+  int fa1/12
+   switchport mode trunk
+   exit
+  int fa1/15
+   switchport mode trunk
+   exit
+
+---------------------------------------R2-------------------------------------------------
+conf t
+int fa0/0
+  no shut
+  exit
+
+int fa0/0.12
+  encap dot1Q 12
+  ip add 10.1.2.2 255.255.255.0
+  exit
+
+int fa0/0.23
+  encap dot1Q 23
+  ip add 10.2.3.2 255.255.255.0
+  exit
+
+
+int fa0/0.25
+  encap dot1Q 25
+  ip add 10.2.5.2 255.255.255.0
+  exit
+
+
+
+int fa0/0.27
+  encap dot1Q 27
+  ip add 10.2.7.2 255.255.255.0
+  exit
+int fa0/0.212
+  encap dot1Q 212
+  ip add 10.2.12.2 255.255.255.0
+  exit
+
+
+
+
+
+
+router ospf 1
+network 10.1.2.2 0.0.0.0 area 0
+network 10.2.3.2 0.0.0.0 area 0
+network 10.2.5.2 0.0.0.0 area 0
+network 10.2.7.2 0.0.0.0 area 3
+network 10.2.12.2 0.0.0.0 area 7
+  exit
+
+int loop0
+	ip add 10.0.0.2 255.255.255.255
+router ospf 1
+	router-id 10.0.0.2
+	network 10.0.0.2 0.0.0.0.0 area 0
+area 3 virtual-link 10.0.0.8
+area 4 virtual-link 10.0.0.9
+area 7 stub 
+area 7 stub no-summaries
+
+
+
+
+
+
+
+
+-------------------------------------------------R4-----------------------------------
+conf t
+int fa0/0
+  no shut
+  exit
+
+int fa0/0.34
+  encap dot1Q 34
+  ip add 10.3.4.4 255.255.255.0
+
+  ip nat inside
+  exit
+int fa0/1
+  ip add DHCP
+  ip nat outside
+  no shut
+  exit
+
+  ip nat inside source list 1 int fa0/1 overload
+
+
+  access-list 1 permit 10.1.2.0 0.0.0.255
+  access-list 1 permit 10.1.3.0 0.0.0.255
+  access-list 1 permit 10.1.5.0 0.0.0.255
+  access-list 1 permit 10.2.3.0 0.0.0.255
+  access-list 1 permit 10.2.5.0 0.0.0.255
+  access-list 1 permit 10.2.7.0 0.0.0.255
+  access-list 1 permit 10.3.4.0 0.0.0.255
+  access-list 1 permit 10.3.5.0 0.0.0.255
+  access-list 1 permit 10.5.6.0 0.0.0.255
+  access-list 1 permit 10.7.8.0 0.0.0.255
+  access-list 1 permit 10.8.9.0 0.0.0.255
+
+
+router ospf 1
+  network 10.3.4.4 0.0.0.0 area 1
+  exit
+int loop0
+	ip add 10.0.0.4 255.255.255.255
+router ospf 1
+	router-id 10.0.0.4
+	network 10.0.0.4 0.0.0.0 area 1
+	default-information originate
+
+
+
+-------------------------------------------------------R6----------------------------------------
+conf t
+int fa0/0
+  no shut
+  exit
+
+
+int fa0/0.56
+  encap dot1Q 56
+  ip add 10.5.6.6 255.255.255.0
+  no shut
+
+  ip nat inside
+  exit
+
+int fa0/1
+  ip add DHCP
+  ip nat outside
+  no shut
+  exit
+
+  ip nat inside source list 1 int fa0/1 overload
+
+
+  access-list 1 permit 10.1.2.0 0.0.0.255
+  access-list 1 permit 10.1.3.0 0.0.0.255
+  access-list 1 permit 10.1.5.0 0.0.0.255
+  access-list 1 permit 10.2.3.0 0.0.0.255
+  access-list 1 permit 10.2.5.0 0.0.0.255
+  access-list 1 permit 10.2.7.0 0.0.0.255
+  access-list 1 permit 10.3.4.0 0.0.0.255
+  access-list 1 permit 10.3.5.0 0.0.0.255
+  access-list 1 permit 10.5.6.0 0.0.0.255
+  access-list 1 permit 10.7.8.0 0.0.0.255
+  access-list 1 permit 10.8.9.0 0.0.0.255
+
+router ospf 1
+  network 10.5.6.6 0.0.0.0 area 2
+  default-information originate
+
+int loop0
+  ip add 10.0.0.6 255.255.255.255
+router ospf 1
+	router-id 10.0.0.6
+	network 10.0.0.6 0.0.0.0 area 2
+conf t
+ int fa0/1.10
+   encapsulation dot1q 10
+   ip add 172.19.1.1 255.255.255.240
+
+ int fa0/1.20
+   encapsulation dot1q 20
+   ip add 172.19.1.17 255.255.255.240
+
+int fa0/1.30
+   encapsulation dot1q 30
+   ip add 172.19.1.33 255.255.255.240
+
+int fa0/1.40
+   encapsulation dot1q 40
+   ip add 172.19.1.49 255.255.255.240
+   exit
+router ospf 1
+	redistribute connect subnet
+  exit
+
+
+
+--------------------------------------------------------R8--------------------------------------------
+conf t
+int fa0/0
+  no shut
+  exit
+
+
+int fa0/0.78
+  encap dot1Q 78
+  ip add 10.7.8.8 255.255.255.0
+  exit
+
+int fa0/0.89
+  encap dot1Q 89
+  ip add 10.8.9.8 255.255.255.0
+  exit
+
+router ospf 1
+  network 10.7.8.8 0.0.0.0 area 3
+  network 10.8.9.8 0.0.0.0 area 4
+  exit
+int loop0
+ 	ip add 10.0.0.8 255.255.255.255
+router ospf 1
+	router-id 10.0.0.8	
+	network 10.0.0.8 0.0.0.0 area 3
+area 3 virtual-link 10.0.0.2
+area  4 virtual link 10.0.0.9
+
+
+
+--------------------------------------------------------R10--------------------------------------------
+conf t
+int fa0/0
+  no shut
+  exit
+
+
+int fa0/0.910
+  encap dot1Q 910
+  ip add 10.9.10.10 255.255.255.0
+  exit
+
+router ospf 1
+  network 10.9.10.10 0.0.0.0 area 5
+  exit
+int loop0
+ 	ip add 10.0.0.10 255.255.255.255
+router ospf 1
+	router-id 10.0.0.10	
+	network 10.0.0.10 0.0.0.0 area 5
+
+
+--------------------------------------------------------R12--------------------------------------------
+conf t
+int fa0/0
+  no shut
+  exit
+
+
+int fa0/0.212
+  encap dot1Q 212
+  ip add 10.2.12.12 255.255.255.0
+  exit
+router ospf 1
+  network 10.2.12.12 0.0.0.0 area 7
+  exit
+int loop0
+ 	ip add 10.0.0.12 255.255.255.255
+router ospf 1
+	router-id 10.0.0.12	
+	network 10.0.0.12 0.0.0.0 area 7
+area 7 stub 
+
+
+12--
+13--
+
+15--
+
+23--
+
+25--
+
+27--
+
+34--
+35--
+
+56--
+
+
+78--
+
+89--
+
+bo static route
+thêm default info
+set router-id
+cap nhat lai area 
+Tạo virtual link giữa R2-R8: transit area 3
+Tạo virtual link giữa R8-R9: transit area 4
+
+
+
+#show ip ospf interface fa0/0
+R2(config-if)#ip ospf hello-interval 5
+R2#debug ip ospf hello
+R2#undebug all
+
+Juniper
+set logical system   R1  ge-0/0/3 unit 12 disable( <=> no shut in Cisco)
+
+R2-R8: tạo virtual link
+
