@@ -1,0 +1,3 @@
+SW(config)#int range fa1/0 - 3
+SW(config-if-range)#switchport mode trunk
+exit
