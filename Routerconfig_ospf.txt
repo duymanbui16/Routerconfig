@@ -16,30 +16,29 @@ edit logical-systems R1
   set interfaces ge-0/0/3 unit 12 description "connect to R2" 
   set interfaces ge-0/0/3 unit 12 vlan-id 12                           
   set interfaces ge-0/0/3 unit 12 family inet address 10.1.2.1/24 
-  set protocols ospf area 0.0.0.0 interface ge-0/0/3.12
+  set interfaces ge-0/0/3 unit 12 family iso
+  set protocols isis interface ge-0/0/3.12
 
   set interfaces ge-0/0/0 unit 13 description "connect to R3"
   set interfaces ge-0/0/0 unit 13 vlan-id 13                           
   set interfaces ge-0/0/0 unit 13 family inet address 10.1.3.1/24 
-  set protocols ospf area 0.0.0.0 interface ge-0/0/0.13
+  set interfaces ge-0/0/0 unit 13 family iso
+  set protocols isis interface ge-0/0/0.13
  
   set interfaces ge-0/0/0 unit 15 description "connect to R5"
   set interfaces ge-0/0/0 unit 15 vlan-id 15                           
   set interfaces ge-0/0/0 unit 15 family inet address 10.1.5.1/24 
-  set protocols ospf area 0.0.0.0 interface ge-0/0/0.15
+  set interfaces ge-0/0/0 unit 15 family iso
+  set protocols isis interface ge-0/0/0.15
 
   set interfaces ge-0/0/0 unit 111 description "connect to R11"
   set interfaces ge-0/0/0 unit 111 vlan-id 111                         
   set interfaces ge-0/0/0 unit 111 family inet address 10.1.11.1/24 
-  set protocols ospf area 0.0.0.6 interface ge-0/0/0.111
-  set protocols ospf area 0.0.0.6 stub
-  set protocols ospf area 0.0.0.6 stub no-summaries
+  set interfaces ge-0/0/0 unit 111 family iso
+  set protocols isis interface ge-0/0/0.111
 
-
-   	set interfaces lo0 unit 100 family inet address 10.0.0.1/32
-	set protocols ospf area 0.0.0.0 interface lo0.100
-	set routing-options router-id 10.0.0.1
-
+  set interfaces lo0 unit 100 family iso address 49.0005.0000.1000.0001.00
+  set protocols isis interface lo0.100
 
   commit
 
@@ -51,29 +50,30 @@ edit logical-systems R3
   set interfaces ge-0/0/1 unit 13 description "connect to R1"
   set interfaces ge-0/0/1 unit 13 vlan-id 13                           
   set interfaces ge-0/0/1 unit 13 family inet address 10.1.3.3/24 
-  set protocols ospf area 0.0.0.0 interface ge-0/0/1.13
+  set interfaces ge-0/0/1 unit 13 family iso
+  set protocols isis interface ge-0/0/1.13
 
   set interfaces ge-0/0/3 unit 23 description "connect to R2"
   set interfaces ge-0/0/3 unit 23 vlan-id 23                           
   set interfaces ge-0/0/3 unit 23 family inet address 10.2.3.3/24 
-  set protocols ospf area 0.0.0.0 interface ge-0/0/3.23
+  set interfaces ge-0/0/3 unit 23 family iso
+  set protocols isis interface ge-0/0/3.23
 
   set interfaces ge-0/0/3 unit 34 description "connect to R4"
   set interfaces ge-0/0/3 unit 34 vlan-id 34                           
   set interfaces ge-0/0/3 unit 34 family inet address 10.3.4.3/24 
-  set protocols ospf area 0.0.0.1 interface ge-0/0/3.34
+  set interfaces ge-0/0/3 unit 34 family iso
+  set protocols isis interface ge-0/0/3.34
 
   set interfaces ge-0/0/0 unit 35 description "connect to R5"
   set interfaces ge-0/0/0 unit 35 vlan-id 35                           
   set interfaces ge-0/0/0 unit 35 family inet address 10.3.5.3/24 
-  set protocols ospf area 0.0.0.0 interface ge-0/0/0.35
 
- 	set interfaces lo0 unit 300 family inet address 10.0.0.3/32
-	set protocols ospf area 0.0.0.0 interface lo0.300
-	set routing-options router-id 10.0.0.3
+  set interfaces ge-0/0/0 unit 35 family iso
+  set protocols isis interface ge-0/0/0.35
 
-   
-
+  set interfaces lo0 unit 300 family iso address 49.0005.0000.1000.0003.00
+  set protocols isis interface lo0.300
 
  commit
 -------------------------------------------------R5------------------------------------------
@@ -81,27 +81,31 @@ edit logical-systems R5
   set interfaces ge-0/0/1 unit 15 description "connect to R1"
   set interfaces ge-0/0/1 unit 15 vlan-id 15                           
   set interfaces ge-0/0/1 unit 15 family inet address 10.1.5.5/24 
-  set protocols ospf area 0.0.0.0 interface ge-0/0/1.15
+  set interfaces ge-0/0/1 unit 15 family iso
+  set protocols isis interface ge-0/0/1.15
 
   set interfaces ge-0/0/3 unit 25 description "connect to R2"
   set interfaces ge-0/0/3 unit 25 vlan-id 25                          
   set interfaces ge-0/0/3 unit 25 family inet address 10.2.5.5/24 
-  set protocols ospf area 0.0.0.0 interface ge-0/0/3.25
+  set interfaces ge-0/0/3 unit 25 family iso
+  set protocols isis interface ge-0/0/3.25
 
   set interfaces ge-0/0/1 unit 35 description "connect to R3"
   set interfaces ge-0/0/1 unit 35 vlan-id 35                           
   set interfaces ge-0/0/1 unit 35 family inet address 10.3.5.5/24 
-  set protocols ospf area 0.0.0.0 interface ge-0/0/1.35
+  set interfaces ge-0/0/1 unit 35 family iso
+  set protocols isis interface ge-0/0/1.35
 
 
   set interfaces ge-0/0/3 unit 56 description "connect to R6"
   set interfaces ge-0/0/3 unit 56 vlan-id 56                          
   set interfaces ge-0/0/3 unit 56 family inet address 10.5.6.5/24 
-  set protocols ospf area 0.0.0.2 interface ge-0/0/3.56
+  set interfaces ge-0/0/3 unit 56 family iso
+  set protocols isis interface ge-0/0/3.56
 
-	set interfaces lo0 unit 500 family inet address 10.0.0.5/32
-	set protocols ospf area 0.0.0.0 interface lo0.500
-	set routing-options router-id 10.0.0.5
+
+  set interfaces lo0 unit 500 family iso address 49.0005.0000.1000.0005.00
+  set protocols isis interface lo0.500
 
 
 
@@ -112,17 +116,17 @@ edit logical-systems R7
   set interfaces ge-0/0/3 unit 27 description "connect to R2"
   set interfaces ge-0/0/3 unit 27 vlan-id 27                          
   set interfaces ge-0/0/3 unit 27 family inet address 10.2.7.7/24 
-  set protocols ospf area 0.0.0.3 interface ge-0/0/3.27
+  set interfaces ge-0/0/3 unit 27 family iso
+  set protocols isis interface ge-0/0/3.27
 
-  
   set interfaces ge-0/0/3 unit 78 description "connect to R8"
   set interfaces ge-0/0/3 unit 78 vlan-id 78                          
   set interfaces ge-0/0/3 unit 78 family inet address 10.7.8.7/24 
-  set protocols ospf area 0.0.0.3 interface ge-0/0/3.78
+  set interfaces ge-0/0/3 unit 78 family iso
+  set protocols isis interface ge-0/0/3.78
 
-	set interfaces lo0 unit 700 family inet address 10.0.0.7/32
-	set protocols ospf area 0.0.0.3 interface lo0.700
-	set routing-options router-id 10.0.0.7
+  set interfaces lo0 unit 700 family iso address 49.0003.0000.1000.0007.00
+  set protocols isis interface lo0.700
 
 
 
@@ -132,24 +136,18 @@ edit logical-systems R9
 
   set interfaces ge-0/0/3 unit 89 description "connect to R8"
   set interfaces ge-0/0/3 unit 89 vlan-id 89                          
-  set interfaces ge-0/0/3 unit 89 family inet address 10.8.9.9/24 
-  set protocols ospf area 0.0.0.4 interface ge-0/0/3.89
+  set interfaces ge-0/0/3 unit 89 family inet address 10.8.9.9/24   
+  set interfaces ge-0/0/3 unit 89 family iso
+  set protocols isis interface ge-0/0/3.89
 
   set interfaces ge-0/0/3 unit 910 description "connect to R10"
   set interfaces ge-0/0/3 unit 910 vlan-id 910                          
-  set interfaces ge-0/0/3 unit 910 family inet address 10.9.10.9/24 
-  set protocols ospf area 0.0.0.5 interface ge-0/0/3.910
+  set interfaces ge-0/0/3 unit 910 family inet address 10.9.10.9/24     
+  set interfaces ge-0/0/3 unit 910 family iso
+  set protocols isis interface ge-0/0/3.910
 
-
-	set interfaces lo0 unit 900 family inet address 10.0.0.9/32
-	set protocols ospf area 0.0.0.4 interface lo0.900
-	set routing-options router-id 10.0.0.9
-set protocols ospf area 0.0.0.0 virtual-link neighbor-id 10.0.0.8 transit-area 0.0.0.4
-
-
-
-  
-
+  set interfaces lo0 unit 900 family iso address 49.0004.0000.1000.0009.00
+  set protocols isis interface lo0.900
 
   commit
 -------------------------------------R11---------------------------------------
@@ -158,13 +156,11 @@ edit logical-systems R11
   set interfaces ge-0/0/1 unit 111 description "connect to R1"
   set interfaces ge-0/0/1 unit 111 vlan-id 111                          
   set interfaces ge-0/0/1 unit 111 family inet address 10.1.11.11/24 
-  set protocols ospf area 0.0.0.6 interface ge-0/0/1.111
-  set protocols ospf area 0.0.0.6 stub
+  set interfaces ge-0/0/1 unit 111 family iso
+  set protocols isis interface ge-0/0/1.111
 
-
-	set interfaces lo0 unit 1100 family inet address 10.0.0.11/32
-	set protocols ospf area 0.0.0.6 interface lo0.1100
-	set routing-options router-id 10.0.0.11
+  set interfaces lo0 unit 1100 family iso address 49.0006.0000.1000.0011.00
+  set protocols isis interface lo0.1100
  commit
 
 
